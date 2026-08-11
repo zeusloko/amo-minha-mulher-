@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>pro seu universo 💚</title>
+<meta name="theme-color" content="#060a08">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #060a08;
+    --bg-soft: #0a120d;
+    --green-deep: #14301f;
+    --green-mid: #3d8a5c;
+    --green-neon: #93ffb0;
+    --cream: #eef1ea;
+    --gray: #8b9690;
+    --line: #26402f;
+    --paper: #eef0e6;
+    --paper-ink: #1c2620;
+    --space-1: clamp(1.2rem, 5vw, 2rem);
+    --space-2: clamp(2rem, 8vw, 4rem);
+  }
+
+  *{ box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.55;
+  }
+  ::selection{ background: var(--green-mid); color: #060a08; }
+
+  #stars-bg{
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .screen{
+    position: relative;
+    z-index: 1;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: var(--space-2) var(--space-1);
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* ---------- shared bits ---------- */
+  .eyebrow{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-bottom: 0.9rem;
+    opacity: 0.9;
+  }
+
+  .hand-title{
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    font-size: clamp(2.2rem, 10vw, 3.2rem);
+    color: var(--green-neon);
+    margin: 0 0 0.4rem 0;
+    position: relative;
+    display: inline-block;
+    text-shadow: 0 0 24px rgba(147,255,176,0.25);
+  }
+
+  .squiggle{
+    display:block;
+    width: min(220px, 60vw);
+    height: 14px;
+    margin: 0.2rem auto var(--space-1);
+    opacity: 0.8;
+  }
+
+  .body-text{
+    font-size: 1.02rem;
+    color: var(--cream);
+    max-width: 30em;
+    margin: 0 auto;
+    white-space: pre-line;
+  }
+  .body-text.muted{ color: var(--gray); }
+
+  .reveal{
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.is-visible{ opacity: 1; transform: translateY(0); }
+
+  button{
+    font-family: 'Space Grotesk', sans-serif;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: inherit;
+  }
+
+  .btn-line{
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    color: var(--bg);
+    background: var(--green-neon);
+    padding: 0.85rem 1.7rem;
+    border-radius: 999px;
+    box-shadow: 0 0 30px rgba(147,255,176,0.25);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .btn-line:active{ transform: scale(0.96); }
+
+  .btn-ghost{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--gray);
+    border: 1px solid var(--line);
+    padding: 0.7rem 1.3rem;
+    border-radius: 999px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .btn-ghost:active{ color: var(--green-neon); border-color: var(--green-mid); }
+
+  /* ---------- intro ---------- */
+  .intro{
+    padding-top: env(safe-area-inset-top, 0);
+  }
+  .intro .spark{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--green-mid);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 1.6rem;
+    opacity: 0.85;
+  }
+  .intro-msg{
+    font-size: 1.08rem;
+    max-width: 27em;
+    margin: 0 auto 2.4rem;
+  }
+  .intro-msg p{ margin: 0 0 1rem 0; opacity: 0; transform: translateY(10px); animation: line-in 0.8s ease forwards; }
+  .intro-msg p:nth-child(1){ animation-delay: 0.2s; }
+  .intro-msg p:nth-child(2){ animation-delay: 0.9s; }
+  .intro-msg p:nth-child(3){ animation-delay: 1.6s; }
+  .intro-msg p:nth-child(4){ animation-delay: 2.3s; }
+  .intro-msg p:nth-child(5){ animation-delay: 3.0s; }
+  .intro-msg p:nth-child(6){ animation-delay: 3.7s; }
+  @keyframes line-in{ to{ opacity: 1; transform: translateY(0); } }
+
+  #enter-btn{ opacity: 0; animation: line-in 0.8s ease forwards; animation-delay: 4.3s; }
+
+  .scroll-hint{
+    position: absolute;
+    bottom: max(1.4rem, env(safe-area-inset-bottom));
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--gray);
+    letter-spacing: 0.1em;
+    opacity: 0.5;
+  }
+
+  /* ---------- conheco: star phrases ---------- */
+  .phrases{
+    margin-top: var(--space-1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    width: 100%;
+  }
+  .phrase{
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    justify-content: center;
+    font-size: 0.98rem;
+    color: var(--cream);
+    padding: 0.55rem 0.4rem;
+    border-bottom: 1px dashed var(--line);
+  }
+  .phrase:last-child{ border-bottom: none; }
+  .phrase .tw{
+    color: var(--green-neon);
+    font-size: 0.85rem;
+    flex: 0 0 auto;
+  }
+
+  /* ---------- constellation ---------- */
+  .constellation-wrap{
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+  .constellation{ width: 100%; height: auto; overflow: visible; }
+  .const-line{
+    stroke: var(--line);
+    stroke-width: 1;
+    stroke-dasharray: 3 5;
+    fill: none;
+  }
+  .star-node{ cursor: pointer; }
+  .star-node circle.halo{
+    fill: rgba(147,255,176,0.08);
+    transition: r 0.3s ease, opacity 0.3s ease;
+  }
+  .star-node circle.core{
+    fill: var(--green-neon);
+    filter: drop-shadow(0 0 6px rgba(147,255,176,0.6));
+  }
+  .star-node:active circle.halo{ r: 26; }
+  .star-node text{
+    fill: var(--gray);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+  }
+  .hint{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gray);
+    letter-spacing: 0.06em;
+    margin-bottom: var(--space-1);
+  }
+
+  .star-modal{
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgba(6,10,8,0.7);
+    backdrop-filter: blur(3px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .star-modal.open{ opacity: 1; pointer-events: auto; }
+  .modal-card{
+    width: 100%;
+    max-width: 460px;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 22px 22px 0 0;
+    padding: 1.8rem 1.6rem calc(1.8rem + env(safe-area-inset-bottom));
+    transform: translateY(20px);
+    transition: transform 0.35s ease;
+  }
+  .star-modal.open .modal-card{ transform: translateY(0); }
+  .modal-card h3{
+    font-family: 'Caveat', cursive;
+    color: var(--green-neon);
+    font-size: 1.8rem;
+    margin: 0 0 0.5rem 0;
+  }
+  .modal-card p{ margin: 0; color: var(--cream); font-size: 0.98rem; }
+  .modal-close{
+    display:block;
+    margin: 1.3rem auto 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gray);
+    letter-spacing: 0.08em;
+  }
+
+  /* ---------- versoes ---------- */
+  .versions-grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+    width: 100%;
+    margin: var(--space-1) 0 var(--space-2);
+  }
+  .v-item{ display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+  .v-ring{
+    width: 62px; height: 62px;
+    border-radius: 50%;
+    border: 1.5px dashed var(--green-mid);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    background: radial-gradient(circle at 35% 30%, rgba(147,255,176,0.12), transparent 70%);
+  }
+  .v-label{ font-size: 0.78rem; color: var(--gray); max-width: 9em; }
+
+  /* ---------- letter ---------- */
+  .letter-section{ padding-top: var(--space-2); }
+  .letter-paper{
+    background: var(--paper);
+    color: var(--paper-ink);
+    border-radius: 4px;
+    padding: 2.2rem 1.6rem;
+    transform: rotate(-0.6deg);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    position: relative;
+    width: 100%;
+  }
+  .letter-paper::before{
+    content: '';
+    position: absolute;
+    top: -10px; left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    width: 70px; height: 22px;
+    background: rgba(147,255,176,0.18);
+    border: 1px dashed rgba(61,138,92,0.5);
+  }
+  .letter-paper h2{
+    font-family: 'Caveat', cursive;
+    font-size: 2rem;
+    margin: 0 0 1rem 0;
+    color: var(--paper-ink);
+  }
+  .letter-text{
+    font-family: 'Caveat', cursive;
+    font-size: 1.35rem;
+    line-height: 1.5;
+    white-space: pre-line;
+    text-align: left;
+  }
+
+  /* ---------- final ---------- */
+  .final-screen{ position: relative; }
+  .date-big{
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.4rem, 11vw, 3.6rem);
+    color: var(--green-neon);
+    margin: 0 0 0.6rem 0;
+    text-shadow: 0 0 30px rgba(147,255,176,0.3);
+  }
+  .final-screen .line2{ font-size: 1.15rem; margin: 0 0 1.6rem 0; }
+  .final-screen .line3{ font-size: 1.02rem; color: var(--gray); margin: 0 0 2rem 0; }
+  .signature{
+    font-family: 'Caveat', cursive;
+    font-size: 1.6rem;
+    color: var(--green-neon);
+    margin-bottom: var(--space-1);
+  }
+
+  /* ---------- easter egg ---------- */
+  .secret-star{
+    position: absolute;
+    width: 20px; height: 20px;
+    top: 1.4rem; right: 1.6rem;
+    background: none;
+    opacity: 0.14;
+    font-size: 0.9rem;
+    color: var(--green-neon);
+    z-index: 2;
+  }
+  .secret-star:active{ opacity: 0.5; }
+
+  .secret-modal{
+    position: fixed; inset: 0; z-index: 50;
+    display:flex; align-items:center; justify-content:center;
+    background: rgba(6,10,8,0.86);
+    opacity: 0; pointer-events:none;
+    transition: opacity 0.4s ease;
+    padding: 1.4rem;
+  }
+  .secret-modal.open{ opacity:1; pointer-events:auto; }
+  .secret-modal .box{
+    max-width: 340px;
+    text-align:center;
+    font-family:'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--green-neon);
+    white-space: pre-line;
+  }
+  .secret-modal .close{
+    display:block; margin: 1.4rem auto 0;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.7rem; color: var(--gray); letter-spacing: 0.08em;
+  }
+
+  /* ---------- music toggle ---------- */
+  .music-toggle{
+    position: fixed;
+    bottom: max(1.1rem, env(safe-area-inset-bottom));
+    right: 1.1rem;
+    z-index: 30;
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: rgba(10,18,13,0.85);
+    border: 1px solid var(--line);
+    color: var(--green-neon);
+    font-size: 1rem;
+    display:flex; align-items:center; justify-content:center;
+    backdrop-filter: blur(4px);
+  }
+  .music-toast{
+    position: fixed;
+    bottom: 4.4rem; right: 1.1rem;
+    z-index: 30;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    color: var(--gray);
+    background: rgba(10,18,13,0.9);
+    border: 1px solid var(--line);
+    padding: 0.5rem 0.7rem;
+    border-radius: 8px;
+    max-width: 200px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .music-toast.show{ opacity: 1; }
+
+  .divider{
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(var(--line), transparent);
+    margin: 0.4rem auto;
+    opacity: 0.7;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars-bg"></canvas>
+
+<!-- ============ INTRO ============ -->
+<section class="screen intro" id="intro">
+  <div class="spark">um pequeno universo, feito pra você</div>
+  <div class="intro-msg">
+    <p>Eu sei que você gosta quando eu faço coisas à mão pra você.</p>
+    <p>E eu queria muito conseguir fazer aquelas coisas bonitinhas que você gosta, só que, sendo bem sincero… eu não tenho muito talento pra isso KKKKK.</p>
+    <p>Então, dessa vez, eu fiz uma coisa diferente. Fiz esse cantinho aqui pra você.</p>
+    <p>Não sei se você vai gostar, mas eu fiz pensando em você e em todas aquelas coisinhas que fazem você ser você.</p>
+    <p>Então… espero que você goste. 💚</p>
+  </div>
+  <button class="btn-line" id="enter-btn">entra aí →</button>
+  <div class="scroll-hint">31.08</div>
+</section>
+
+<!-- ============ EU CONHEÇO VOCÊ ============ -->
+<section class="screen" id="conheco">
+  <div class="eyebrow reveal">parte 1</div>
+  <h2 class="hand-title reveal">Eu conheço você.</h2>
+  <p class="body-text reveal">Talvez eu não saiba fazer as coisas mais bonitas do mundo com as minhas mãos.
+Mas eu presto atenção em você.
+E acho que isso também é uma forma de amar.</p>
+
+  <div class="phrases">
+    <div class="phrase reveal"><span class="tw">✦</span>Eu sei que você ama verde.</div>
+    <div class="phrase reveal"><span class="tw">✦</span>Eu sei o quanto você gosta de coisas diferentes.</div>
+    <div class="phrase reveal"><span class="tw">✦</span>Eu sei que você ama pintar o cabelo.</div>
+    <div class="phrase reveal"><span class="tw">✦</span>Eu sei das músicas que você gosta.</div>
+    <div class="phrase reveal"><span class="tw">✦</span>Eu sei que BTS faz parte do seu universo.</div>
+    <div class="phrase reveal"><span class="tw">✦</span>Eu sei das coisas que você gosta.</div>
+    <div class="phrase reveal"><span class="tw">✦</span>E também sei das coisas que você não gosta.</div>
+  </div>
+</section>
+
+<!-- ============ SEU UNIVERSO ============ -->
+<section class="screen" id="universo">
+  <div class="eyebrow reveal">parte 2</div>
+  <h2 class="hand-title reveal">Seu universo.</h2>
+  <div class="hint reveal">toque nas estrelas ✦</div>
+
+  <div class="constellation-wrap reveal">
+    <svg class="constellation" viewBox="0 0 340 430" xmlns="http://www.w3.org/2000/svg">
+      <path class="const-line" d="M60,60 L150,110 L230,70 L280,150 L210,220 L120,250 L60,320 L160,360 L260,330"/>
+
+      <g class="star-node" data-key="verde" transform="translate(60,60)">
+        <circle class="halo" r="20"/><circle class="core" r="5"/>
+        <text x="0" y="-16" text-anchor="middle">verde</text>
+      </g>
+      <g class="star-node" data-key="cabelo" transform="translate(150,110)">
+        <circle class="halo" r="20"/><circle class="core" r="5"/>
+        <text x="0" y="-16" text-anchor="middle">cabelo</text>
+      </g>
+      <g class="star-node" data-key="bts" transform="translate(230,70)">
+        <circle class="halo" r="20"/><circle class="core" r="5"/>
+        <text x="0" y="-16" text-anchor="middle">bts</text>
+      </g>
+      <g class="star-node" data-key="musica" transform="translate(280,150)">
+        <circle class="halo" r="20"/><circle class="core" r="5"/>
+        <text x="0" y="18" text-anchor="middle">música</text>
+      </g>
+      <g class="star-node" data-key="alternativo" transform="translate(210,220)">
+        <circle class="halo" r="20"/><circle class="core" r="5"/>
+        <text x="0" y="-16" text-anchor="middle">alternativo</text>
+      </g>
+      <g class="star-node" data-key="arte" transform="translate(120,250)">
+        <circle class="halo" r="20"/><circle class="core" r="5"/>
+        <text x="0" y="18" text-anchor="middle">arte</text>
+      </g>
+      <g class="star-node" data-key="personalidade" transform="translate(60,320)">
+        <circle class="halo" r="20"/><circle class="core" r="5"/>
+        <text x="0" y="18" text-anchor="middle">jeito de ser</text>
+      </g>
+      <g class="star-node" data-key="soela" transform="translate(160,360)">
+        <circle class="halo" r="20"/><circle class="core" r="5"/>
+        <text x="0" y="18" text-anchor="middle">só sua</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<div class="star-modal" id="starModal">
+  <div class="modal-card">
+    <h3 id="modalTitle"></h3>
+    <p id="modalText"></p>
+    <button class="modal-close" id="modalClose">fechar</button>
+  </div>
+</div>
+
+<!-- ============ SE VOCÊ AMA, EU QUERO CONHECER ============ -->
+<section class="screen" id="conhecer">
+  <div class="eyebrow reveal">parte 3</div>
+  <h2 class="hand-title reveal">Se você ama, eu quero conhecer.</h2>
+  <p class="body-text reveal">Eu acho que amar alguém também é gostar de conhecer as coisas que fazem essa pessoa feliz.
+
+Se você gosta de uma música, eu quero ouvir.
+Se você gosta de uma cor, eu quero lembrar dela.
+Se você gosta de mudar o cabelo, eu quero ver cada versão.
+Se alguma coisa faz você feliz, eu quero saber por quê.
+
+Porque, no final, conhecer as coisas que você ama é uma forma de conhecer você.</p>
+</section>
+
+<!-- ============ TODAS AS SUAS VERSÕES ============ -->
+<section class="screen" id="versoes" style="position:relative;">
+  <button class="secret-star" id="secretStar" aria-label="?">✦</button>
+  <div class="eyebrow reveal">parte 4</div>
+  <h2 class="hand-title reveal">Eu amo todas as suas versões.</h2>
+
+  <div class="versions-grid reveal">
+    <div class="v-item"><div class="v-ring">🎨</div><div class="v-label">mudando o cabelo</div></div>
+    <div class="v-item"><div class="v-ring">🎧</div><div class="v-label">ouvindo música</div></div>
+    <div class="v-item"><div class="v-ring">✨</div><div class="v-label">sendo criativa</div></div>
+    <div class="v-item"><div class="v-ring">😆</div><div class="v-label">sendo engraçada</div></div>
+    <div class="v-item"><div class="v-ring">💚</div><div class="v-label">estando feliz</div></div>
+    <div class="v-item"><div class="v-ring">🌙</div><div class="v-label">estando quieta</div></div>
+    <div class="v-item"><div class="v-ring">🖤</div><div class="v-label">do jeito dela</div></div>
+    <div class="v-item"><div class="v-ring">🔭</div><div class="v-label">descobrindo coisas novas</div></div>
+  </div>
+
+  <p class="body-text reveal">Eu não gosto só de uma versão sua. Eu gosto de você mudando.
+Gosto das fases. Gosto das mudanças.
+Gosto das coisas que você ainda vai descobrir sobre você mesma.
+E espero continuar conhecendo todas elas.</p>
+</section>
+
+<!-- ============ A CARTA ============ -->
+<section class="screen letter-section" id="carta">
+  <div class="eyebrow reveal">parte 5</div>
+  <div class="letter-paper reveal">
+    <h2>Agora falando sério…</h2>
+    <div class="letter-text">Eu sei que você gosta de receber coisas feitas à mão.
+Eu não tenho muita habilidade pra desenhar ou fazer artesanato. Por isso eu criei esse site.
+
+Mas mesmo não sabendo fazer essas coisas, eu sei prestar atenção em você.
+Sei o que você gosta. Sei o que você não gosta.
+Sei das pequenas coisas. Sei das mudanças.
+Sei das coisas que fazem você feliz.
+
+E amo tudo isso, porque tudo isso faz parte de você.
+
+Eu talvez não saiba fazer as coisas mais bonitas com as minhas mãos.
+Mas fiz isso com muito carinho pra você.
+
+Feliz aniversário, meu amor. 💚</div>
+  </div>
+</section>
+
+<!-- ============ FINAL ============ -->
+<section class="screen final-screen" id="final">
+  <div class="eyebrow reveal">31.08</div>
+  <p class="date-big reveal">31 de agosto.</p>
+  <p class="line2 reveal">Hoje eu comemoro você.</p>
+  <p class="line3 reveal">Obrigado por existir no meu universo. 💚</p>
+  <p class="signature reveal">Com amor, [seu nome]</p>
+  <button class="btn-ghost" id="restart-btn">voltar ao começo</button>
+</section>
+
+<div class="secret-modal" id="secretModal">
+  <div class="box">
+    <div>Você encontrou.
+
+Acho que algumas das melhores coisas são justamente aquelas que a gente não encontra de primeira.
+
+Igual a você.
+Quanto mais eu conheço, mais eu descubro.</div>
+    <button class="close" id="secretClose">fechar</button>
+  </div>
+</div>
+
+<button class="music-toggle" id="musicBtn" aria-label="tocar música">♪</button>
+<div class="music-toast" id="musicToast">adicione "music.mp3" na mesma pasta pra ativar a música</div>
+<audio id="bgAudio" loop preload="none">
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* ---------------- starfield ---------------- */
+(function(){
+  const canvas = document.getElementById('stars-bg');
+  const ctx = canvas.getContext('2d');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let w, h, stars = [], particles = [];
+
+  function resize(){
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = document.documentElement.scrollHeight;
+    canvas.style.height = h + 'px';
+    buildStars();
+  }
+
+  function buildStars(){
+    const count = Math.min(140, Math.floor((w*h)/16000));
+    stars = Array.from({length: count}, () => ({
+      x: Math.random()*w,
+      y: Math.random()*h,
+      r: Math.random()*1.3 + 0.3,
+      phase: Math.random()*Math.PI*2,
+      speed: 0.6 + Math.random()*0.8,
+      green: Math.random() < 0.16
+    }));
+    const pcount = reduced ? 0 : 26;
+    particles = Array.from({length: pcount}, () => ({
+      x: Math.random()*w,
+      y: Math.random()*h,
+      r: Math.random()*1.6 + 0.6,
+      vy: -(0.12 + Math.random()*0.25),
+      drift: (Math.random()-0.5)*0.15,
+      op: 0.1 + Math.random()*0.25
+    }));
+  }
+
+  let t = 0;
+  function draw(){
+    t += 0.016;
+    ctx.clearRect(0,0,w,h);
+    for(const s of stars){
+      const tw = reduced ? 0.8 : (0.55 + 0.45*Math.sin(t*s.speed + s.phase));
+      ctx.globalAlpha = tw * 0.85;
+      ctx.fillStyle = s.green ? '#93ffb0' : '#eef1ea';
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fill();
+    }
+    if(!reduced){
+      for(const p of particles){
+        p.y += p.vy;
+        p.x += p.drift;
+        if(p.y < -10){ p.y = h+10; p.x = Math.random()*w; }
+        ctx.globalAlpha = p.op;
+        ctx.fillStyle = '#93ffb0';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(draw);
+  setTimeout(resize, 600); // re-measure after fonts/layout settle
+})();
+
+/* ---------------- scroll reveal ---------------- */
+(function(){
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('is-visible');
+      }
+    });
+  }, { threshold: 0.2 });
+  els.forEach((el, i) => {
+    el.style.transitionDelay = (i % 6) * 0.07 + 's';
+    io.observe(el);
+  });
+})();
+
+/* ---------------- intro button ---------------- */
+document.getElementById('enter-btn').addEventListener('click', () => {
+  document.getElementById('conheco').scrollIntoView({ behavior: 'smooth' });
+});
+document.getElementById('restart-btn').addEventListener('click', () => {
+  document.getElementById('intro').scrollIntoView({ behavior: 'smooth' });
+});
+
+/* ---------------- constellation modal ---------------- */
+const starData = {
+  verde: {
+    title: 'verde',
+    text: 'Você ama verde. E acho engraçado como, depois de conhecer você, eu comecei a olhar pra essa cor de um jeito diferente.'
+  },
+  cabelo: {
+    title: 'cabelo',
+    text: 'Eu gosto de ver você mudando o cabelo. Não importa qual versão apareça, ainda é você. E eu gosto de todas elas.'
+  },
+  bts: {
+    title: 'bts',
+    text: 'Eu sei o quanto você gosta de BTS. Talvez eu nunca sinta exatamente as coisas da mesma forma que você sente, mas gosto de conhecer aquilo que faz você feliz.'
+  },
+  musica: {
+    title: 'música',
+    text: 'Eu sei que música faz parte de quase tudo que você faz. Tem trilha sonora pra cada humor seu, e eu gosto de tentar adivinhar qual é.'
+  },
+  alternativo: {
+    title: 'alternativo',
+    text: 'Você gosta das coisas fora do óbvio. Isso também é você: nunca escolhe o caminho mais fácil só porque é o mais fácil.'
+  },
+  arte: {
+    title: 'arte',
+    text: 'Eu sei que você cria coisas. Não sei explicar direito como você faz isso, só sei que gosto de ver o que sai da sua cabeça.'
+  },
+  personalidade: {
+    title: 'jeito de ser',
+    text: 'Você tem um jeito de ser que eu não sei bem descrever. Só sei que não é igual ao de mais ninguém que eu conheço.'
+  },
+  soela: {
+    title: 'só sua',
+    text: 'Tem coisas que só você gosta, que ninguém mais entende direito. Eu também não entendo tudo, mas gosto que existam.'
+  }
+};
+
+const modal = document.getElementById('starModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalText = document.getElementById('modalText');
+
+document.querySelectorAll('.star-node').forEach(node => {
+  node.addEventListener('click', () => {
+    const key = node.getAttribute('data-key');
+    const d = starData[key];
+    if(!d) return;
+    modalTitle.textContent = d.title;
+    modalText.textContent = d.text;
+    modal.classList.add('open');
+  });
+});
+document.getElementById('modalClose').addEventListener('click', () => modal.classList.remove('open'));
+modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('open'); });
+
+/* ---------------- easter egg ---------------- */
+const secretStar = document.getElementById('secretStar');
+const secretModal = document.getElementById('secretModal');
+secretStar.addEventListener('click', () => {
+  secretModal.classList.add('open');
+  secretStar.style.opacity = '0.6';
+});
+document.getElementById('secretClose').addEventListener('click', () => secretModal.classList.remove('open'));
+secretModal.addEventListener('click', (e) => { if(e.target === secretModal) secretModal.classList.remove('open'); });
+
+/* ---------------- music ---------------- */
+const musicBtn = document.getElementById('musicBtn');
+const audio = document.getElementById('bgAudio');
+const toast = document.getElementById('musicToast');
+let playing = false;
+
+musicBtn.addEventListener('click', () => {
+  if(!playing){
+    audio.play().then(() => {
+      playing = true;
+      musicBtn.textContent = '❚❚';
+    }).catch(() => {
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3200);
+    });
+  } else {
+    audio.pause();
+    playing = false;
+    musicBtn.textContent = '♪';
+  }
+});
+</script>
+
+</body>
+</html>
